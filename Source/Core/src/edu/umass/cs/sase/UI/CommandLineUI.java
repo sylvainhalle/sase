@@ -94,8 +94,7 @@ public class CommandLineUI
 			myEngineController = new EngineController(engineType);
 		}
 		myEngineController.setNfa(nfaFileLocation);
-
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			// repreat multiple times for a constant performance
 			myEngineController.initializeEngine();
@@ -109,7 +108,6 @@ public class CommandLineUI
 			myEngineController.runEngine();
 			System.out.println("\nProfiling results for repeat No." + (i + 1)
 					+ " are as follows:");
-
 			Profiling.printProfiling();
 
 		}

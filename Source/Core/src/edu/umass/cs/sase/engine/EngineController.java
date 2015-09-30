@@ -83,6 +83,7 @@ public class EngineController
 	public void setNfa(String selectionStrategy, String nfaLocation)
 	{
 		NFA nfa = new NFA(selectionStrategy, nfaLocation);
+		System.out.println(nfa);
 		myEngine.setNfa(nfa);
 	}
 
@@ -95,6 +96,7 @@ public class EngineController
 	public void setNfa(String nfaLocation)
 	{
 		NFA nfa = new NFA(nfaLocation);
+		System.out.println(nfa);
 		myEngine.setNfa(nfa);
 	}
 
