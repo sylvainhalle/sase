@@ -1,6 +1,15 @@
 SASE Open Source System
 ====
 
+This is a fork of the [SASE event stream processor](https://github.com/haopeng/sase).
+Only minimal modifications have been made so that it can be run from a Java program
+instead of through the command line. See the commit history for details about
+the changes that have been made.
+
+What follows is the content of the original Readme file.
+
+<hr/>
+
 We are delighted to release the first version of SASE Open Source System Release.
 ##Introduction
 SASE is a stream processing system developed at the University of Massachusetts Amherst. SASE provides fast pattern matching over streams. It supports complex pattern queries and achieves high throughput. The release of SASE 1.0 contains the stream processing engine of the SASE system. Some advanced features such as processing streams with imprecise timestamps are not included in this release.
