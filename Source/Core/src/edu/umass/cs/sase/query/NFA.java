@@ -24,7 +24,6 @@
  */
 package edu.umass.cs.sase.query;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -255,6 +254,7 @@ public class NFA
 						size++;
 				}
 				states = new State[size];
+				br.close();
 
 				// parse each state
 				br = new BufferedReader(new FileReader(nfaFile));

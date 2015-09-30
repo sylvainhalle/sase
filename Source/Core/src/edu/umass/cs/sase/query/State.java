@@ -27,7 +27,6 @@ package edu.umass.cs.sase.query;
 import java.util.StringTokenizer;
 
 import edu.umass.cs.sase.stream.Event;
-
 import net.sourceforge.jeval.EvaluationException;
 
 /**
@@ -157,6 +156,7 @@ public class State
 		// System.out.println(pDescription);
 		// a predicate should be composed of 3 parts: left operator right
 		StringTokenizer st = new StringTokenizer(pDescription);
+		@SuppressWarnings("unused")
 		int size = st.countTokens();
 		String left = st.nextToken();
 

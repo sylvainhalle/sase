@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 import edu.umass.cs.sase.engine.EventBuffer;
 import edu.umass.cs.sase.engine.Run;
 import edu.umass.cs.sase.stream.Event;
-
 import net.sourceforge.jeval.*;
 
 /**
@@ -412,6 +411,7 @@ public class PredicateOptimized
 				if (tempOperand.getRelatedState().equalsIgnoreCase("$previous"))
 				{
 					int eventId = r.getPreviousEventId();
+					@SuppressWarnings("unused")
 					int value = b.getEvent(eventId).getAttributeByName(
 							tempAttributeName);
 

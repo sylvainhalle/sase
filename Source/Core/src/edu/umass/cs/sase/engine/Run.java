@@ -305,6 +305,7 @@ public class Run implements Cloneable
 	/**
 	 * Clones the run itself
 	 */
+	@SuppressWarnings("unchecked")
 	public Object clone() throws CloneNotSupportedException
 	{
 
@@ -387,7 +388,7 @@ public class Run implements Cloneable
 	{
 		for (int i = 0; i < this.valueVector[stateNumber].length; i++)
 		{
-			String att = this.valueVector[stateNumber][i].getAttribute();
+			//String att = this.valueVector[stateNumber][i].getAttribute();
 			if (this.valueVector[stateNumber][i].getAttribute().equals(
 					attribute)
 					&& this.valueVector[stateNumber][i].getType()

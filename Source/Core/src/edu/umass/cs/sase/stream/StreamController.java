@@ -94,8 +94,6 @@ public class StreamController
 		int symbol;
 		int volume;
 		int price = r.nextInt(100);
-		int random = 0;
-		String eventType = "stock";
 
 		for (int i = 0; i < size; i++)
 		{
@@ -208,7 +206,6 @@ public class StreamController
 		int volume;
 		int price = r.nextInt(100);
 		int random = 0;
-		String eventType = "stock";
 
 		for (int i = 0; i < size; i++)
 		{
@@ -248,7 +245,6 @@ public class StreamController
 		int volume;
 		int price = this.randomGenerator.nextInt(100);
 		int random = 0;
-		String eventType = "stock";
 
 		for (int i = 0; i < number; i++)
 		{
