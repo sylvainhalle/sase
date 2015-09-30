@@ -21,7 +21,7 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 package edu.umass.cs.sase.engine;
 
@@ -30,81 +30,104 @@ import edu.umass.cs.sase.query.NFA;
 import edu.umass.cs.sase.stream.Stream;
 
 /**
- * This class is used to wrap the Engine class, 
- * such that when you write code, you can quickly locate the related methods.
+ * This class is used to wrap the Engine class, such that when you write code,
+ * you can quickly locate the related methods.
+ * 
  * @author haopeng
  *
  */
-public class EngineController {
+public class EngineController
+{
 	/**
 	 * The engine
 	 */
 	Engine myEngine;
+
 	/**
 	 * Initializes the engine
 	 */
-	public void initializeEngine(){
+	public void initializeEngine()
+	{
 		myEngine.initialize();
 	}
+
 	/**
 	 * Default constructor.
 	 */
-	public EngineController(){
-		myEngine = new Engine();		
+	public EngineController()
+	{
+		myEngine = new Engine();
 	}
+
 	/**
 	 * Constructor, can set different kinds of engines by different parameters
-	 * @param engineType specifies the engine type, currently supports "sharingengine"
+	 * 
+	 * @param engineType
+	 *            specifies the engine type, currently supports "sharingengine"
 	 */
-	public EngineController(String engineType){
-		
-			myEngine = new Engine();
-		
+	public EngineController(String engineType)
+	{
+
+		myEngine = new Engine();
+
 	}
-/**
- * Sets the nfa and selection strategy for the engine
- * @param selectionStrategy the selection strategy
- * @param nfaLocation the nfa file for the query
- */
-	public void setNfa(String selectionStrategy, String nfaLocation){
+
+	/**
+	 * Sets the nfa and selection strategy for the engine
+	 * 
+	 * @param selectionStrategy
+	 *            the selection strategy
+	 * @param nfaLocation
+	 *            the nfa file for the query
+	 */
+	public void setNfa(String selectionStrategy, String nfaLocation)
+	{
 		NFA nfa = new NFA(selectionStrategy, nfaLocation);
 		myEngine.setNfa(nfa);
 	}
-/**
- * Sets the nfa for the engine.	
- * @param nfaLocation the nfa file for the query
- */
-	public void setNfa(String nfaLocation){
+
+	/**
+	 * Sets the nfa for the engine.
+	 * 
+	 * @param nfaLocation
+	 *            the nfa file for the query
+	 */
+	public void setNfa(String nfaLocation)
+	{
 		NFA nfa = new NFA(nfaLocation);
 		myEngine.setNfa(nfa);
 	}
-/**
- * Sets the input stream for the engine
- * @param input the input stream
- */
-	public void setInput(Stream input){
+
+	/**
+	 * Sets the input stream for the engine
+	 * 
+	 * @param input
+	 *            the input stream
+	 */
+	public void setInput(Stream input)
+	{
 		myEngine.setInput(input);
 	}
-/**
- * starts to run the engine	
- * @throws CloneNotSupportedException
- * @throws EvaluationException
- */
-	public void runEngine() throws CloneNotSupportedException, EvaluationException{
+
+	/**
+	 * starts to run the engine
+	 * 
+	 * @throws CloneNotSupportedException
+	 * @throws EvaluationException
+	 */
+	public void runEngine() throws CloneNotSupportedException,
+			EvaluationException
+	{
 		myEngine.runEngine();
-		
+
 		/*
-			if(myEngine.getNfa().getSelectionStrategy().equalsIgnoreCase("partition-contiguity")){
-				myEngine.runPartitionContiguityEngine();
-			}else{
-			myEngine.runEngine();
-			
-			}
-		*/
-		
+		 * if(myEngine.getNfa().getSelectionStrategy().equalsIgnoreCase(
+		 * "partition-contiguity")){ myEngine.runPartitionContiguityEngine();
+		 * }else{ myEngine.runEngine();
+		 * 
+		 * }
+		 */
+
 	}
 
-	
-
-	
 }

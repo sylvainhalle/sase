@@ -21,7 +21,7 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.query;
 
 import java.util.StringTokenizer;
@@ -32,67 +32,73 @@ import net.sourceforge.jeval.EvaluationException;
 
 /**
  * This class represents a state from NFA.
+ * 
  * @author haopeng
  * 
  */
-public class State {
-	
+public class State
+{
 
 	/**
 	 * The line in the nfa file for this state
 	 */
 	String nfaLine;
-	
+
 	/**
 	 * The type of the state, normal, kleene closure or negation
 	 */
-	String stateType; 
-	
+	String stateType;
+
 	/**
 	 * The event type for this state
 	 */
 	String eventType;
-	
+
 	/**
 	 * The order of this state
 	 */
 	int order;
-	
+
 	/**
 	 * Denoting whether this state is the first state
 	 */
 	boolean isStart;
-	
+
 	/**
 	 * Denoting whether this state is the last state
 	 */
 	boolean isEnding;
-	
+
 	/**
 	 * Denoting whether this state is a kleene closure state
 	 */
 	boolean isKleeneClosure;
-	
+
 	boolean isNegation;
 	boolean isBeforeNegation;
 	boolean isAfterNegation;
-	
+
 	/**
 	 * The edges from this state
 	 */
 	Edge[] edges;
-	
+
 	/**
-	 * Representation for this state in the fast query format, usually 'a' for the first state, 'b' for the second state, etc.
+	 * Representation for this state in the fast query format, usually 'a' for
+	 * the first state, 'b' for the second state, etc.
 	 */
 	String tag;
-	
+
 	/**
 	 * Constructs a state based on a line in the nfa file, and the order
-	 * @param nfaLine the line in the nfa file
-	 * @param order the order of this state
+	 * 
+	 * @param nfaLine
+	 *            the line in the nfa file
+	 * @param order
+	 *            the order of this state
 	 */
-	public State(String nfaLine, int order){
+	public State(String nfaLine, int order)
+	{
 		this.nfaLine = nfaLine;
 		this.order = order;
 		isStart = false;
@@ -100,383 +106,479 @@ public class State {
 		isKleeneClosure = false;
 		eventType = "test";
 		parseNfaLine(nfaLine);
-		if(this.stateType.equalsIgnoreCase("kleeneclosure")){
+		if (this.stateType.equalsIgnoreCase("kleeneclosure"))
+		{
 			this.isKleeneClosure = true;
 		}
-		
+
 	}
-	public State(int order, String tag, String eventType, String stateType){
+
+	public State(int order, String tag, String eventType, String stateType)
+	{
 		this.order = order;
 		this.tag = tag;
 		this.eventType = eventType;
 		this.stateType = stateType;
-		if(this.stateType.equalsIgnoreCase("normal")){
+		if (this.stateType.equalsIgnoreCase("normal"))
+		{
 			this.isKleeneClosure = false;
 			this.isNegation = false;
 			this.edges = new Edge[1];
 			this.edges[0] = new Edge(0);
-			
-		}else if(this.stateType.equalsIgnoreCase("kleeneClosure")){
+
+		} else if (this.stateType.equalsIgnoreCase("kleeneClosure"))
+		{
 			this.isKleeneClosure = true;
 			this.isNegation = false;
 			this.edges = new Edge[3];
-			for(int i = 0; i < 3; i ++){
+			for (int i = 0; i < 3; i++)
+			{
 				this.edges[i] = new Edge(i);
 			}
-		}else if(this.stateType.equalsIgnoreCase("negation")){
+		} else if (this.stateType.equalsIgnoreCase("negation"))
+		{
 			this.isKleeneClosure = false;
 			this.isNegation = true;
 			this.edges = new Edge[1];
 			this.edges[0] = new Edge(0);
 		}
-		
+
 	}
+
 	/**
 	 * Adds a predicate to this state based on the given description.
+	 * 
 	 * @param pDescription
 	 */
-	public void addPredicate(String pDescription){
-		//System.out.println("A new predicate is added to this state: " + this.tag);
-		//System.out.println(pDescription);
+	public void addPredicate(String pDescription)
+	{
+		// System.out.println("A new predicate is added to this state: " +
+		// this.tag);
+		// System.out.println(pDescription);
 		// a predicate should be composed of 3 parts: left operator right
 		StringTokenizer st = new StringTokenizer(pDescription);
 		int size = st.countTokens();
 		String left = st.nextToken();
-		
+
 		int edgeNumber = this.parseEdgeNumber(left);
-		//System.out.println("left=" + left);
-		
+		// System.out.println("left=" + left);
+
 		String right = null;
-		while(st.hasMoreTokens()){
-			right = st.nextToken();}
-		
-		//System.out.println("right=" + right);
+		while (st.hasMoreTokens())
+		{
+			right = st.nextToken();
+		}
+
+		// System.out.println("right=" + right);
 		String newLeft = this.replaceLeftStateNumber(left);
 		String newRight = this.replaceRightStateNumber(right);
-		
-		
+
 		String p = pDescription.replace(left, newLeft);
 		p = p.replace(right, newRight);
 		this.edges[edgeNumber].addPredicate(p);
-		//System.out.println("predicate after parsing is:" + p);
-		
-		
+		// System.out.println("predicate after parsing is:" + p);
+
 	}
+
 	/**
 	 * Used to replace the state number of the left operand
+	 * 
 	 * @param original
 	 * @return the replaced string
 	 */
-	public String replaceLeftStateNumber(String original){
+	public String replaceLeftStateNumber(String original)
+	{
 		int dotPosition = original.indexOf('.');
 		return original.substring(dotPosition + 1, original.length());
 	}
+
 	/**
 	 * Used to replace the state number of the right operand
+	 * 
 	 * @param original
 	 * @return the replaced string
 	 */
-	public String replaceRightStateNumber(String original){
-		if(original.contains("(")){
-			String innerPart = this.parseRightStateNumber(original.substring(original.indexOf('(') + 1,original.indexOf(')')));
+	public String replaceRightStateNumber(String original)
+	{
+		if (original.contains("("))
+		{
+			String innerPart = this.parseRightStateNumber(original.substring(
+					original.indexOf('(') + 1, original.indexOf(')')));
 			String outterPart = original.substring(0, original.indexOf('('));
 			return outterPart + "(" + innerPart + ")";
-		}else{
+		} else
+		{
 			return this.parseRightStateNumber(original);
 		}
-	
+
 	}
+
 	/**
 	 * Parses the state number of the right operand
+	 * 
 	 * @param original
 	 * @return the parsed state number
 	 */
-	public String parseRightStateNumber(String original){
-		if(!original.contains(".")){
+	public String parseRightStateNumber(String original)
+	{
+		if (!original.contains("."))
+		{
 			return original;
-		}else{
-			if(original.contains("[..i-1]")){
+		} else
+		{
+			if (original.contains("[..i-1]"))
+			{
 				char initial = original.charAt(0);
-				String stateNamePart = original.substring(0, original.indexOf(']')+1);
-				return original.replace(stateNamePart,	"$" + (initial - 'a' + 1));
+				String stateNamePart = original.substring(0,
+						original.indexOf(']') + 1);
+				return original.replace(stateNamePart, "$"
+						+ (initial - 'a' + 1));
 			}
 			String stateName = original.substring(0, original.indexOf('.'));
-			if(stateName.length() == 1){
-				if(stateName.equalsIgnoreCase(this.tag)){
+			if (stateName.length() == 1)
+			{
+				if (stateName.equalsIgnoreCase(this.tag))
+				{
 					return original.substring(original.indexOf('.'));
-				}else{
-					return original.replace(stateName, "$" + (stateName.charAt(0) - 'a' + 1));
+				} else
+				{
+					return original.replace(stateName,
+							"$" + (stateName.charAt(0) - 'a' + 1));
 				}
-			}else{
+			} else
+			{
 				return "$previous" + original.substring(original.indexOf('.'));
 			}
 		}
-		
+
 	}
+
 	/**
 	 * Judges the edge type, "take" or "begin"
+	 * 
 	 * @param predicateLeft
 	 * @return 1 for "take", 0 for "begin"
 	 */
-	public int parseEdgeNumber(String predicateLeft){
-		 if(predicateLeft.contains("[i]")){
-			 //"take" edge
+	public int parseEdgeNumber(String predicateLeft)
+	{
+		if (predicateLeft.contains("[i]"))
+		{
+			// "take" edge
 			return 1;
-		}else
+		} else
 			return 0;
 	}
+
 	/**
-	 * Parses a line in the nfa file, e.g.: State=1 & type = normal & eventtype = c | edgetype = begin & price < 100
-	 * @param nfaLine the line in the nfa file
+	 * Parses a line in the nfa file, e.g.: State=1 & type = normal & eventtype
+	 * = c | edgetype = begin & price < 100
+	 * 
+	 * @param nfaLine
+	 *            the line in the nfa file
 	 */
-	void parseNfaLine(String nfaLine){
+	void parseNfaLine(String nfaLine)
+	{
 		this.nfaLine = nfaLine;
-		StringTokenizer st = new StringTokenizer(nfaLine, "|"); //parse the state and edges
+		StringTokenizer st = new StringTokenizer(nfaLine, "|"); // parse the
+																// state and
+																// edges
 		int count = 0;
-		int size = st.countTokens();//count the size of edges
+		int size = st.countTokens();// count the size of edges
 		edges = new Edge[size - 1];// parse the edge
-		while (st.hasMoreTokens()){
-			if(count == 0){// parse the part describing the state
+		while (st.hasMoreTokens())
+		{
+			if (count == 0)
+			{// parse the part describing the state
 				parseState(st.nextToken().trim());
-				count ++;
-			}
-			else{
-				edges[count -1] = new Edge(st.nextToken().trim());
-				count ++;
+				count++;
+			} else
+			{
+				edges[count - 1] = new Edge(st.nextToken().trim());
+				count++;
 			}
 		}
 	}
-	
+
 	/**
-	 * Parses the description for state, e.g.: state = 1, type = normal/kleeneclosure/negation
-	 * @param stateLine the description for this state
+	 * Parses the description for state, e.g.: state = 1, type =
+	 * normal/kleeneclosure/negation
+	 * 
+	 * @param stateLine
+	 *            the description for this state
 	 */
-	public void parseState(String stateLine){ 
+	public void parseState(String stateLine)
+	{
 		StringTokenizer st = new StringTokenizer(stateLine, "&");
-		while (st.hasMoreTokens()){
+		while (st.hasMoreTokens())
+		{
 			parseEquation(st.nextToken().trim());
 		}
 	}
-	
+
 	/**
 	 * Parses the formulas in the query, e.g.: price > 100
-	 * @param equation the formula string
+	 * 
+	 * @param equation
+	 *            the formula string
 	 */
-	public void parseEquation(String equation){// parse the state/state type, eventtype
+	public void parseEquation(String equation)
+	{// parse the state/state type, eventtype
 		StringTokenizer st = new StringTokenizer(equation, "=");
 		String left = st.nextToken().trim();
 		String right = st.nextToken().trim();
-		if (left.equalsIgnoreCase("state")){
+		if (left.equalsIgnoreCase("state"))
+		{
 			this.order = Integer.parseInt(right);
-		} else if(left.equalsIgnoreCase("type"))
+		} else if (left.equalsIgnoreCase("type"))
 		{
 			this.stateType = right;
-		}else if(left.equalsIgnoreCase("eventtype")){
+		} else if (left.equalsIgnoreCase("eventtype"))
+		{
 			this.eventType = right;
 		}
 	}
-	
+
 	/**
 	 * Self description
 	 */
-	public String toString(){
+	public String toString()
+	{
 		String temp = "";
-		if(isStart)
+		if (isStart)
 			temp += " I am a starting state";
-		if(isEnding)
+		if (isEnding)
 			temp += " I am a ending state";
-		if(isKleeneClosure)
+		if (isKleeneClosure)
 			temp += " I am a kleene closure state";
 		temp += " My state type is: " + this.stateType;
 		temp += "\n my description file = " + this.nfaLine;
-		return "This is the " + order + " state, requiring events of " + eventType
-			+" event type, "+ temp;
+		return "This is the " + order + " state, requiring events of "
+				+ eventType + " event type, " + temp;
 	}
 
-	public boolean canStartWithEvent(Event e) throws EvaluationException{
-	
-		
-		if(!e.getEventType().equalsIgnoreCase(this.eventType)){
-			
+	public boolean canStartWithEvent(Event e) throws EvaluationException
+	{
+
+		if (!e.getEventType().equalsIgnoreCase(this.eventType))
+		{
+
 			return false;
 		}
-		if(this.edges[0].evaluatePredicate(e,e)){
+		if (this.edges[0].evaluatePredicate(e, e))
+		{
 			return true;
 		}
 		return false;
-		
+
 	}
 
-	
-	
-	
-	
 	/**
 	 * @return the eventType
 	 */
-	public String getEventType() {
+	public String getEventType()
+	{
 		return eventType;
 	}
 
-
 	/**
-	 * @param eventType the eventType to set
+	 * @param eventType
+	 *            the eventType to set
 	 */
-	public void setEventType(String eventType) {
+	public void setEventType(String eventType)
+	{
 		this.eventType = eventType;
 	}
-
 
 	/**
 	 * @return the order
 	 */
-	public int getOrder() {
+	public int getOrder()
+	{
 		return order;
 	}
 
 	/**
-	 * @param order the order to set
+	 * @param order
+	 *            the order to set
 	 */
-	public void setOrder(int order) {
+	public void setOrder(int order)
+	{
 		this.order = order;
 	}
 
 	/**
 	 * @return the isStart
 	 */
-	public boolean isStart() {
+	public boolean isStart()
+	{
 		return isStart;
 	}
 
-
 	/**
-	 * @param isStart the isStart to set
+	 * @param isStart
+	 *            the isStart to set
 	 */
-	public void setStart(boolean isStart) {
+	public void setStart(boolean isStart)
+	{
 		this.isStart = isStart;
 	}
-
 
 	/**
 	 * @return the isEnding
 	 */
-	public boolean isEnding() {
+	public boolean isEnding()
+	{
 		return isEnding;
 	}
 
-
 	/**
-	 * @param isEnding the isEnding to set
+	 * @param isEnding
+	 *            the isEnding to set
 	 */
-	public void setEnding(boolean isEnding) {
+	public void setEnding(boolean isEnding)
+	{
 		this.isEnding = isEnding;
 	}
-
 
 	/**
 	 * @return the isKleeneClosure
 	 */
-	public boolean isKleeneClosure() {
+	public boolean isKleeneClosure()
+	{
 		return isKleeneClosure;
 	}
 
-
 	/**
-	 * @param isKleeneClosure the isKleeneClosure to set
+	 * @param isKleeneClosure
+	 *            the isKleeneClosure to set
 	 */
-	public void setKleeneClosure(boolean isKleeneClosure) {
+	public void setKleeneClosure(boolean isKleeneClosure)
+	{
 		this.isKleeneClosure = isKleeneClosure;
 	}
+
 	/**
 	 * @return the nfaLine
 	 */
-	public String getNfaLine() {
+	public String getNfaLine()
+	{
 		return nfaLine;
 	}
+
 	/**
-	 * @param nfaLine the nfaLine to set
+	 * @param nfaLine
+	 *            the nfaLine to set
 	 */
-	public void setNfaLine(String nfaLine) {
+	public void setNfaLine(String nfaLine)
+	{
 		this.nfaLine = nfaLine;
 	}
+
 	/**
 	 * @return the stateType
 	 */
-	public String getStateType() {
+	public String getStateType()
+	{
 		return stateType;
 	}
+
 	/**
-	 * @param stateType the stateType to set
+	 * @param stateType
+	 *            the stateType to set
 	 */
-	public void setStateType(String stateType) {
+	public void setStateType(String stateType)
+	{
 		this.stateType = stateType;
 	}
+
 	/**
 	 * @return the edges
 	 */
-	public Edge[] getEdges() {
+	public Edge[] getEdges()
+	{
 		return edges;
 	}
-	
-	public Edge getEdges(int order) {
+
+	public Edge getEdges(int order)
+	{
 		return edges[order];
 	}
+
 	/**
-	 * @param edges the edges to set
+	 * @param edges
+	 *            the edges to set
 	 */
-	public void setEdges(Edge[] edges) {
+	public void setEdges(Edge[] edges)
+	{
 		this.edges = edges;
 	}
+
 	/**
 	 * @return the isNegation
 	 */
-	public boolean isNegation() {
+	public boolean isNegation()
+	{
 		return isNegation;
 	}
+
 	/**
-	 * @param isNegation the isNegation to set
+	 * @param isNegation
+	 *            the isNegation to set
 	 */
-	public void setNegation(boolean isNegation) {
+	public void setNegation(boolean isNegation)
+	{
 		this.isNegation = isNegation;
 	}
+
 	/**
 	 * @return the isBeforeNegation
 	 */
-	public boolean isBeforeNegation() {
+	public boolean isBeforeNegation()
+	{
 		return isBeforeNegation;
 	}
+
 	/**
-	 * @param isBeforeNegation the isBeforeNegation to set
+	 * @param isBeforeNegation
+	 *            the isBeforeNegation to set
 	 */
-	public void setBeforeNegation(boolean isBeforeNegation) {
+	public void setBeforeNegation(boolean isBeforeNegation)
+	{
 		this.isBeforeNegation = isBeforeNegation;
 	}
+
 	/**
 	 * @return the isAfterNegation
 	 */
-	public boolean isAfterNegation() {
+	public boolean isAfterNegation()
+	{
 		return isAfterNegation;
 	}
+
 	/**
-	 * @param isAfterNegation the isAfterNegation to set
+	 * @param isAfterNegation
+	 *            the isAfterNegation to set
 	 */
-	public void setAfterNegation(boolean isAfterNegation) {
+	public void setAfterNegation(boolean isAfterNegation)
+	{
 		this.isAfterNegation = isAfterNegation;
 	}
+
 	/**
 	 * @return the tag
 	 */
-	public String getTag() {
+	public String getTag()
+	{
 		return tag;
 	}
+
 	/**
-	 * @param tag the tag to set
+	 * @param tag
+	 *            the tag to set
 	 */
-	public void setTag(String tag) {
+	public void setTag(String tag)
+	{
 		this.tag = tag;
 	}
-	
-	
-	
-	
+
 }

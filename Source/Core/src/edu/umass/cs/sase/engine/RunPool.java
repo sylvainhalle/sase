@@ -21,61 +21,64 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.engine;
 
 import java.util.ArrayList;
 
 /**
  * This class is used to reuse runs in memory
+ * 
  * @author haopeng
  *
  */
-public class RunPool {
+public class RunPool
+{
 	/**
 	 * The poos of runs
 	 */
 	ArrayList<Run> runPool;
+
 	/**
 	 * Default constructor
 	 */
-	public RunPool(){
+	public RunPool()
+	{
 		runPool = new ArrayList<Run>();
-		
+
 	}
-	
+
 	/**
 	 * Returns a run
+	 * 
 	 * @return a run
 	 */
-	public Run getRun(){
+	public Run getRun()
+	{
 		int size = runPool.size();
-		for(int i = 0; i < size ; i ++){
-			if (!(runPool.get(i)).isAlive()){
+		for (int i = 0; i < size; i++)
+		{
+			if (!(runPool.get(i)).isAlive())
+			{
 				return runPool.get(i);
 			}
 		}
 		runPool.add(new Run());
 		return runPool.get(size);
-		
+
 	}
-	
 
 	/**
 	 * Returns a sharingRun, used by the sharing engine
+	 * 
 	 * @return a sharing run
 	 */
 	/*
-	public SharingRun getSharingRun(){
-		int size = runPool.size();
-		for(int i = 0; i < size ; i ++){
-			if (!(runPool.get(i)).isAlive()){
-				return (SharingRun)runPool.get(i);
-			}
-		}
-		runPool.add(new SharingRun());
-		return (SharingRun)runPool.get(size);
-		
-	}
-	*/
+	 * public SharingRun getSharingRun(){ int size = runPool.size(); for(int i =
+	 * 0; i < size ; i ++){ if (!(runPool.get(i)).isAlive()){ return
+	 * (SharingRun)runPool.get(i); } } runPool.add(new SharingRun()); return
+	 * (SharingRun)runPool.get(size);
+	 * 
+	 * }
+	 */
 }

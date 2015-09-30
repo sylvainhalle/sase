@@ -21,58 +21,62 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.stream;
 
 /**
  * Configurates the paramters for generating stock event streams
+ * 
  * @author haopeng
  *
  */
-public class StockStreamConfig {
+public class StockStreamConfig
+{
 	/**
 	 * 
 	 */
 	public static int streamSize = 10000;
-	
+
 	/**
 	 * Denoting the max price value, so the price range is: [1, maxPrice]
 	 */
 	public static int maxPrice = 100;
-	
+
 	/**
 	 * Volume range is: [1, maxVolume]
 	 */
 	public static int maxVolume = 1000;
-	
+
 	/**
 	 * Symbol range is: [1, numOfSymbol];
 	 */
 	public static int numOfSymbol = 10;
-	
+
 	/**
 	 * The random seed.
 	 * 
 	 */
-	
+
 	public static int randomSeed = 11;
-	
+
 	/**
 	 * The probability that the value would increase
 	 */
-	
-	public static int increaseProbability = 101; //%
-	
+
+	public static int increaseProbability = 101; // %
+
 	/**
 	 * Prints the configuration
 	 */
-	public static void printConfig(){
+	public static void printConfig()
+	{
 		System.out.println("stream size:" + streamSize);
 		System.out.println("price range: [1, " + maxPrice + "]");
 		System.out.println("volume range: [1, " + maxVolume + "]");
 		System.out.println("symbol range: [1, " + numOfSymbol + "]");
-		System.out.println("random seed:" + randomSeed );
-		System.out.println("increase probability: " + increaseProbability + "%");
-		
+		System.out.println("random seed:" + randomSeed);
+		System.out
+				.println("increase probability: " + increaseProbability + "%");
+
 	}
 }

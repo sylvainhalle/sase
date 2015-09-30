@@ -21,7 +21,7 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.UI;
 
 import java.io.IOException;
@@ -34,78 +34,84 @@ import edu.umass.cs.sase.stream.ParseStockStreamConfig;
 import edu.umass.cs.sase.stream.StockStreamConfig;
 import edu.umass.cs.sase.stream.StreamController;
 
-
-
 /**
  * The interface
+ * 
  * @author haopeng
  *
  */
-public class CommandLineUI {
+public class CommandLineUI
+{
 	/**
 	 * The main entry to run the engine under command line
 	 * 
-	 * @param args the inputs 
-	 * 0: the nfa file location 
-	 * 1: the stream config file
-	 * 2: print the results or not (1 for print, 0 for not print)
-	 * 3: use sharing techniques or not, ("sharingengine" for use, nothing for not use)
+	 * @param args
+	 *            the inputs 0: the nfa file location 1: the stream config file
+	 *            2: print the results or not (1 for print, 0 for not print) 3:
+	 *            use sharing techniques or not, ("sharingengine" for use,
+	 *            nothing for not use)
 	 */
-	public static void main(String args[]) throws CloneNotSupportedException, EvaluationException, IOException{
+	public static void main(String args[]) throws CloneNotSupportedException,
+			EvaluationException, IOException
+	{
 		String nfaFileLocation = "test.query";
 		String streamConfigFile = "test.stream";
-		
-	
-		
+
 		String engineType = null;
-		if(args.length > 0){
+		if (args.length > 0)
+		{
 			nfaFileLocation = args[0];
 		}
-		
-		if(args.length > 1){
+
+		if (args.length > 1)
+		{
 			streamConfigFile = args[1];
 		}
-		
-		if(args.length > 2){
-			if(Integer.parseInt(args[2])== 1){
+
+		if (args.length > 2)
+		{
+			if (Integer.parseInt(args[2]) == 1)
+			{
 				ConfigFlags.printResults = true;
-			}else{
+			} else
+			{
 				ConfigFlags.printResults = false;
 			}
 		}
-		
-		if(args.length > 3){
+
+		if (args.length > 3)
+		{
 			engineType = args[3];
 		}
 		ParseStockStreamConfig.parseStockEventConfig(streamConfigFile);
-		
-				
-		StreamController myStreamController = null; 
-		
+
+		StreamController myStreamController = null;
+
 		EngineController myEngineController = new EngineController();
-		
-		if(engineType != null){
+
+		if (engineType != null)
+		{
 			myEngineController = new EngineController(engineType);
 		}
 		myEngineController.setNfa(nfaFileLocation);
-		
-				
-		for(int i = 0; i < 20; i ++){
-			//repreat multiple times for a constant performance
+
+		for (int i = 0; i < 20; i++)
+		{
+			// repreat multiple times for a constant performance
 			myEngineController.initializeEngine();
 			System.gc();
-			System.out.println("\nRepeat No." + (i+1) +" is started...");
-			myStreamController = new StreamController(StockStreamConfig.streamSize,"StockEvent");
-			myStreamController.generateStockEventsAsConfigType();			
-			myEngineController.setInput(myStreamController.getMyStream());			
-			//myStreamController.printStream();
+			System.out.println("\nRepeat No." + (i + 1) + " is started...");
+			myStreamController = new StreamController(
+					StockStreamConfig.streamSize, "StockEvent");
+			myStreamController.generateStockEventsAsConfigType();
+			myEngineController.setInput(myStreamController.getMyStream());
+			// myStreamController.printStream();
 			myEngineController.runEngine();
-			System.out.println("\nProfiling results for repeat No." + (i+1) +" are as follows:");
-			
+			System.out.println("\nProfiling results for repeat No." + (i + 1)
+					+ " are as follows:");
+
 			Profiling.printProfiling();
-			
-			
-			
+
 		}
-}
+	}
 }

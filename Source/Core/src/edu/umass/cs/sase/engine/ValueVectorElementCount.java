@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2011, Regents of the University of Massachusetts Amherst 
  * All rights reserved.
@@ -22,107 +21,143 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.engine;
 
 import edu.umass.cs.sase.stream.Event;
 
 /**
  * This class represents the COUNT aggregation.
+ * 
  * @author haopeng
  *
  */
-public class ValueVectorElementCount implements ValueVectorElement{
+public class ValueVectorElementCount implements ValueVectorElement
+{
 	int stateNumber;
 	String attribute;
 	int currentValue;
-	
+
 	int neededByState;
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.umass.cs.sase.engine.ValueVectorElement#getValue()
 	 */
-	
-	public int getValue() {
+
+	public int getValue()
+	{
 		// TODO Auto-generated method stub
-		
+
 		return this.currentValue;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.umass.cs.sase.engine.ValueVectorElement#updateValue(edu.umass.cs.sase.stream.Event)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.umass.cs.sase.engine.ValueVectorElement#updateValue(edu.umass.cs.
+	 * sase.stream.Event)
 	 */
-	
-	public void updateValue(Event e) {
+
+	public void updateValue(Event e)
+	{
 		// TODO Auto-generated method stub
-		this.currentValue ++;
-		
+		this.currentValue++;
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.umass.cs.sase.engine.ValueVectorElement#getStateNumber()
 	 */
-	
-	public int getStateNumber() {
+
+	public int getStateNumber()
+	{
 		// TODO Auto-generated method stub
 		return this.stateNumber;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.umass.cs.sase.engine.ValueVectorElement#getType()
 	 */
-	
-	public String getType() {
+
+	public String getType()
+	{
 		// TODO Auto-generated method stub
 		return "count";
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.umass.cs.sase.engine.ValueVectorElement#getAttribute()
 	 */
-	
-	public String getAttribute() {
+
+	public String getAttribute()
+	{
 		// TODO Auto-generated method stub
-		
+
 		return this.attribute;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.umass.cs.sase.engine.ValueVectorElement#setAttribute(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.umass.cs.sase.engine.ValueVectorElement#setAttribute(java.lang.String
+	 * )
 	 */
-	
-	public void setAttribute(String a) {
+
+	public void setAttribute(String a)
+	{
 		// TODO Auto-generated method stub
 		this.attribute = a;
-		
+
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.umass.cs.sase.engine.ValueVectorElement#initializeValue(edu.umass.cs.sase.stream.Event)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.umass.cs.sase.engine.ValueVectorElement#initializeValue(edu.umass
+	 * .cs.sase.stream.Event)
 	 */
-	
-	public void initializeValue(Event e) {
+
+	public void initializeValue(Event e)
+	{
 		// TODO Auto-generated method stub
 		this.currentValue = 1;
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.umass.cs.sase.engine.ValueVectorElement#getNeededByState()
 	 */
-	
-	public int getNeededByState() {
+
+	public int getNeededByState()
+	{
 		// TODO Auto-generated method stub
 		return this.neededByState;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.umass.cs.sase.engine.ValueVectorElement#setNeededByState(int)
 	 */
-	
-	public void setNeededByState(int n) {
+
+	public void setNeededByState(int n)
+	{
 		// TODO Auto-generated method stub
 		this.neededByState = n;
-		
+
 	}
 
 }

@@ -174,6 +174,7 @@ public class NFA {
 					this.addMorePartitionAttribute();
 				}
 			}
+			br.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

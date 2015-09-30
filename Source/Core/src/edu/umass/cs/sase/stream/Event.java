@@ -21,81 +21,90 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.stream;
 
 /**
  * This is the interface for events that would be processed by the engine.
+ * 
  * @author haopeng
  * 
  */
-public interface Event {
-	
+public interface Event
+{
+
 	/**
 	 * Returns the value of the attribute with the required name
-	 * @param attributeName the required attribute name
+	 * 
+	 * @param attributeName
+	 *            the required attribute name
 	 * @return the value of the attribute, integer
 	 */
 	public int getAttributeByName(String attributeName);
-	
+
 	/**
 	 * Returns the value of the attribute with the required name
-	 * @param attributeName the required attribute name
+	 * 
+	 * @param attributeName
+	 *            the required attribute name
 	 * @return the value of the attribute, double
 	 */
 	public double getAttributeByNameDouble(String attributeName);
-	
+
 	/**
 	 * Returns the value of the attribute with the required name
-	 * @param attributeName the required attribute name
+	 * 
+	 * @param attributeName
+	 *            the required attribute name
 	 * @return the value of the attribute, string
 	 */
 	public String getAttributeByNameString(String attributeName);
-	
+
 	/**
 	 * Returns the value type of the attribute
-	 * @param attributeName the required attribute name
-	 * @return the code representing the type, 0 for integer, 1 for double, 2 for string
+	 * 
+	 * @param attributeName
+	 *            the required attribute name
+	 * @return the code representing the type, 0 for integer, 1 for double, 2
+	 *         for string
 	 */
 	public int getAttributeValueType(String attributeName);
-	
+
 	/**
 	 * 
 	 * @return the event id
 	 */
 	public int getId();
-	
+
 	/**
 	 * 
-	 * @param Id the event id to set
+	 * @param Id
+	 *            the event id to set
 	 */
 	public void setId(int Id);
-	
+
 	/**
 	 * 
 	 * @return self description
 	 */
 	public String toString();
-	
+
 	/**
 	 * 
 	 * @return the timestamp of the event
 	 */
-	public int getTimestamp( );
+	public int getTimestamp();
 
 	/**
 	 * 
 	 * @return the event type
 	 */
 	public String getEventType();
-	
+
 	/**
 	 * 
 	 * @return the cloned event
 	 */
 	public Object clone();
-
-
-
 
 }

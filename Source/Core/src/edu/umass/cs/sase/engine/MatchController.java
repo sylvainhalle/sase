@@ -21,17 +21,19 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.engine;
 
 import java.util.ArrayList;
 
 /**
  * This class is used to buffer matches
+ * 
  * @author haopeng
  * 
  */
-public class MatchController {
+public class MatchController
+{
 	/**
 	 * The matches
 	 */
@@ -40,27 +42,34 @@ public class MatchController {
 	 * The number of matches
 	 */
 	int myMatchesSize;
-	
-/**
- * The default constructor
- */
-	public MatchController(){
+
+	/**
+	 * The default constructor
+	 */
+	public MatchController()
+	{
 		myMatches = new ArrayList<Match>();
-		
-		
+
 	}
-/**
- * Adds a match to the match buffer.
- * @param m the match to be added
- */
-	public void addMatch(Match m){
+
+	/**
+	 * Adds a match to the match buffer.
+	 * 
+	 * @param m
+	 *            the match to be added
+	 */
+	public void addMatch(Match m)
+	{
 		this.myMatches.add(m);
 	}
-/**
- * prints the matches in console
- */
-	public void printMatches(){
-		for(int i = 0; i < this.myMatches.size(); i ++){
+
+	/**
+	 * prints the matches in console
+	 */
+	public void printMatches()
+	{
+		for (int i = 0; i < this.myMatches.size(); i++)
+		{
 			System.out.println(this.myMatches.get(i));
 		}
 	}
@@ -68,30 +77,35 @@ public class MatchController {
 	/**
 	 * @return the myMatches
 	 */
-	public ArrayList<Match> getMyMatches() {
+	public ArrayList<Match> getMyMatches()
+	{
 		return myMatches;
 	}
+
 	/**
-	 * @param myMatches the myMatches to set
+	 * @param myMatches
+	 *            the myMatches to set
 	 */
-	public void setMyMatches(ArrayList<Match> myMatches) {
+	public void setMyMatches(ArrayList<Match> myMatches)
+	{
 		this.myMatches = myMatches;
 	}
+
 	/**
 	 * @return the myMatchesSize
 	 */
-	public int getMyMatchesSize() {
+	public int getMyMatchesSize()
+	{
 		return myMatchesSize;
 	}
+
 	/**
-	 * @param myMatchesSize the myMatchesSize to set
+	 * @param myMatchesSize
+	 *            the myMatchesSize to set
 	 */
-	public void setMyMatchesSize(int myMatchesSize) {
+	public void setMyMatchesSize(int myMatchesSize)
+	{
 		this.myMatchesSize = myMatchesSize;
 	}
 
-
 }
-	
-	
-

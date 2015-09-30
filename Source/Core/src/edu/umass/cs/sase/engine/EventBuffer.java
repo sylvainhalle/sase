@@ -21,7 +21,7 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.engine;
 
 import java.util.HashMap;
@@ -30,35 +30,49 @@ import edu.umass.cs.sase.stream.Event;
 
 /**
  * This class is used to buffer the selected events.
+ * 
  * @author haopeng
  *
  */
-public class EventBuffer {
+public class EventBuffer
+{
 	/**
 	 * The buffered events
 	 */
 	HashMap<Integer, Event> buffer;
-	public EventBuffer(){
+
+	public EventBuffer()
+	{
 		buffer = new HashMap<Integer, Event>();
-		
+
 	}
+
 	/**
 	 * This method returns the event with the provided event id.
-	 * <p> this method is awesome.
-	 * @param Id The id of the event you want
+	 * <p>
+	 * this method is awesome.
+	 * 
+	 * @param Id
+	 *            The id of the event you want
 	 * @return The event with the Id.
 	 */
-	public Event getEvent(int Id){
+	public Event getEvent(int Id)
+	{
 		return buffer.get(Id);
 	}
+
 	/**
 	 * Buffers an event
-	 * @param e The event to be buffered
+	 * 
+	 * @param e
+	 *            The event to be buffered
 	 */
-	public void bufferEvent(Event e){
-		if(buffer.get(e.getId()) == null){
+	public void bufferEvent(Event e)
+	{
+		if (buffer.get(e.getId()) == null)
+		{
 			buffer.put(e.getId(), e);
-			}
+		}
 	}
 
 }

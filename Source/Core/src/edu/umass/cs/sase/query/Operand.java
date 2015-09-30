@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2011, Regents of the University of Massachusetts Amherst 
  * All rights reserved.
@@ -22,24 +21,26 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.query;
 
 /**
  * This class wraps an operand
+ * 
  * @author haopeng
  *
  */
-public class Operand {
+public class Operand
+{
 	/**
-	 * Describes the type of the operand. 
-	 * The type should be one of the following options:
-	 * nonVar: for number and operator 
-	 * attributeVar: for an attribute name 
-	 * relatedEventVar: for a related event's attribute 
+	 * Describes the type of the operand. The type should be one of the
+	 * following options: nonVar: for number and operator attributeVar: for an
+	 * attribute name relatedEventVar: for a related event's attribute
 	 * aggregationVar: for an aggregation
 	 */
-	String operandType; //nonVar: for number and operator, attributeVar: for an attribute name, relatedEventVar: for a related event's attribute, aggregationVar: for an aggregation
+	String operandType; // nonVar: for number and operator, attributeVar: for an
+						// attribute name, relatedEventVar: for a related
+						// event's attribute, aggregationVar: for an aggregation
 	/**
 	 * Original representation of the operand, e.g. price
 	 */
@@ -52,7 +53,7 @@ public class Operand {
 	 * The attribute in the operand
 	 */
 	String attribute;
-	
+
 	/**
 	 * The aggregation in the operand
 	 */
@@ -77,274 +78,361 @@ public class Operand {
 	 * Flag denoting whether the operand is a number
 	 */
 	boolean isNumber;
+
 	/**
 	 * Default constructor
-	 * @param oper the description of the operand
+	 * 
+	 * @param oper
+	 *            the description of the operand
 	 */
-	public Operand(String oper){
-		
+	public Operand(String oper)
+	{
+
 		oper = oper.trim();
 		this.originalRepresentation = oper;
 		this.parse(oper);
 		this.formatRepresentation();
 		this.checkSingle();
-		
+
 	}
+
 	/**
 	 * Checks whether the operand is single
 	 */
-	public void checkSingle(){
-		if(this.hasAggregation){
+	public void checkSingle()
+	{
+		if (this.hasAggregation)
+		{
 			this.isSingle = false;
 			return;
-		}else if(this.hasRelatedState && !this.relatedState.equalsIgnoreCase("$previous")){
+		} else if (this.hasRelatedState
+				&& !this.relatedState.equalsIgnoreCase("$previous"))
+		{
 			this.isSingle = false;
 			return;
 		}
 		this.isSingle = true;
 	}
+
 	/**
 	 * Parses the operand
-	 * @param operand the operand description
+	 * 
+	 * @param operand
+	 *            the operand description
 	 */
-	public void parse(String operand){
+	public void parse(String operand)
+	{
 		String numPattern = "[0-9]+";
 		String operatorPattern = "[-'+''*''/''%']";
-		if(operand.matches(numPattern) || operand.matches(operatorPattern)){
-			
+		if (operand.matches(numPattern) || operand.matches(operatorPattern))
+		{
+
 			this.operandType = "nonVar";
-			
-			
-			
-		}else{
-			
+
+		} else
+		{
+
 			this.parseNonNum(operand);
 		}
 	}
+
 	/**
 	 * Parses the non number operands
+	 * 
 	 * @param operand
 	 */
-	public void parseNonNum(String operand){
+	public void parseNonNum(String operand)
+	{
 		// 3 cases:
-		// -1. attribute name, 
+		// -1. attribute name,
 		// -2. other event's attribute name, starting with '$'
 		// -3. aggregation: feature: contains'(' and ')'
-		if(operand.contains("(") && operand.contains(")")){
+		if (operand.contains("(") && operand.contains(")"))
+		{
 			this.operandType = "aggregationVar";
 			this.parseAggregation(operand);
-			
-		}else if(operand.startsWith("$")){
+
+		} else if (operand.startsWith("$"))
+		{
 			this.operandType = "relatedEventVar";
 			this.parseRelatedEvent(operand);
-		}else{
+		} else
+		{
 			this.operandType = "attributeVar";
 			this.attribute = operand;
 			this.hasAggregation = false;
 			this.hasRelatedState = false;
 		}
-		
+
 	}
+
 	/**
 	 * Parses the aggregation
+	 * 
 	 * @param operand
 	 */
-	public void parseAggregation(String operand){
-		
+	public void parseAggregation(String operand)
+	{
+
 		this.hasAggregation = true;
 		this.hasRelatedState = true;
-		int position = operand.indexOf('(');	
-		this.aggregation = operand.substring(0, position);	
-		this.parseRelatedEventForAggregation(operand.substring(position + 1, operand.length() - 1));
+		int position = operand.indexOf('(');
+		this.aggregation = operand.substring(0, position);
+		this.parseRelatedEventForAggregation(operand.substring(position + 1,
+				operand.length() - 1));
 	}
+
 	/**
 	 * Parses related event for aggregation
+	 * 
 	 * @param operand
 	 */
-	public void parseRelatedEventForAggregation(String operand){
-		
-		
+	public void parseRelatedEventForAggregation(String operand)
+	{
+
 		int position = operand.indexOf('.');
 		this.relatedState = operand.substring(1, position);
-	
+
 		this.attribute = operand.substring(position + 1);
-	
+
 	}
+
 	/**
 	 * Parses related event
+	 * 
 	 * @param operand
 	 */
-	public void parseRelatedEvent(String operand){
+	public void parseRelatedEvent(String operand)
+	{
 		this.hasRelatedState = true;
-	
+
 		int position = operand.indexOf('.');
 		this.relatedState = operand.substring(0, position);
-		
-		if(this.relatedState.equalsIgnoreCase("$previous")){
+
+		if (this.relatedState.equalsIgnoreCase("$previous"))
+		{
 			this.hasAggregation = false;
 			this.relatedState = operand.substring(0, position);
-		
-		}else {
+
+		} else
+		{
 			this.hasAggregation = true;
 			this.aggregation = "set";
 			this.relatedState = operand.substring(1, position);
 			this.operandType = "aggregationVar";
-		
+
 		}
-		
+
 		this.attribute = operand.substring(position + 1);
-		
+
 	}
+
 	/**
 	 * Format the representation of the operand
 	 */
-	public void formatRepresentation(){
-		if(this.operandType.equalsIgnoreCase("nonVar")){
+	public void formatRepresentation()
+	{
+		if (this.operandType.equalsIgnoreCase("nonVar"))
+		{
 			this.formatedRepresentation = this.originalRepresentation;
-		}else {
-			this.formatedRepresentation = "#{" + this.originalRepresentation + "}";
+		} else
+		{
+			this.formatedRepresentation = "#{" + this.originalRepresentation
+					+ "}";
 		}
 
 	}
-	public String toString(){
+
+	public String toString()
+	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("My operand type is: " + this.operandType + "\n");
-		if(this.operandType.equalsIgnoreCase("attribute")){
+		if (this.operandType.equalsIgnoreCase("attribute"))
+		{
 			sb.append("My attribute is: " + this.attribute + "\n");
 		}
-		if(this.operandType.equalsIgnoreCase("relatedEvent")){
+		if (this.operandType.equalsIgnoreCase("relatedEvent"))
+		{
 			sb.append("My relevant event is: " + this.relatedState + "\n");
 			sb.append("My attribute is: " + this.attribute + "\n");
 		}
-		if(this.operandType.equalsIgnoreCase("aggregation")){
+		if (this.operandType.equalsIgnoreCase("aggregation"))
+		{
 			sb.append("My aggregation is: " + this.aggregation + "\n");
 			sb.append("My relevant event is: " + this.relatedState + "\n");
 			sb.append("My attribute is: " + this.attribute + "\n");
 		}
 		return sb.toString();
 	}
+
 	/**
 	 * @return the operandType
 	 */
-	public String getOperandType() {
+	public String getOperandType()
+	{
 		return operandType;
 	}
+
 	/**
-	 * @param operandType the operandType to set
+	 * @param operandType
+	 *            the operandType to set
 	 */
-	public void setOperandType(String operandType) {
+	public void setOperandType(String operandType)
+	{
 		this.operandType = operandType;
 	}
+
 	/**
 	 * @return the originalRepresentation
 	 */
-	public String getOriginalRepresentation() {
+	public String getOriginalRepresentation()
+	{
 		return originalRepresentation;
 	}
+
 	/**
-	 * @param originalRepresentation the originalRepresentation to set
+	 * @param originalRepresentation
+	 *            the originalRepresentation to set
 	 */
-	public void setOriginalRepresentation(String originalRepresentation) {
+	public void setOriginalRepresentation(String originalRepresentation)
+	{
 		this.originalRepresentation = originalRepresentation;
 	}
+
 	/**
 	 * @return the formatedRepresentation
 	 */
-	public String getFormatedRepresentation() {
+	public String getFormatedRepresentation()
+	{
 		return formatedRepresentation;
 	}
+
 	/**
-	 * @param formatedRepresentation the formatedRepresentation to set
+	 * @param formatedRepresentation
+	 *            the formatedRepresentation to set
 	 */
-	public void setFormatedRepresentation(String formatedRepresentation) {
+	public void setFormatedRepresentation(String formatedRepresentation)
+	{
 		this.formatedRepresentation = formatedRepresentation;
 	}
+
 	/**
 	 * @return the attribute
 	 */
-	public String getAttribute() {
+	public String getAttribute()
+	{
 		return attribute;
 	}
+
 	/**
-	 * @param attribute the attribute to set
+	 * @param attribute
+	 *            the attribute to set
 	 */
-	public void setAttribute(String attribute) {
+	public void setAttribute(String attribute)
+	{
 		this.attribute = attribute;
 	}
-	
+
 	/**
 	 * @return the aggregation
 	 */
-	public String getAggregation() {
+	public String getAggregation()
+	{
 		return aggregation;
 	}
+
 	/**
-	 * @param aggregation the aggregation to set
+	 * @param aggregation
+	 *            the aggregation to set
 	 */
-	public void setAggregation(String aggregation) {
+	public void setAggregation(String aggregation)
+	{
 		this.aggregation = aggregation;
 	}
+
 	/**
 	 * @return the relatedState
 	 */
-	public String getRelatedState() {
+	public String getRelatedState()
+	{
 		return relatedState;
 	}
+
 	/**
-	 * @param relatedState the relatedState to set
+	 * @param relatedState
+	 *            the relatedState to set
 	 */
-	public void setRelatedState(String relatedState) {
+	public void setRelatedState(String relatedState)
+	{
 		this.relatedState = relatedState;
 	}
+
 	/**
 	 * @return the isNumber
 	 */
-	public boolean isNumber() {
+	public boolean isNumber()
+	{
 		return isNumber;
 	}
+
 	/**
-	 * @param isNumber the isNumber to set
+	 * @param isNumber
+	 *            the isNumber to set
 	 */
-	public void setNumber(boolean isNumber) {
+	public void setNumber(boolean isNumber)
+	{
 		this.isNumber = isNumber;
 	}
+
 	/**
 	 * @return the hasRelatedState
 	 */
-	public boolean isHasRelatedState() {
+	public boolean isHasRelatedState()
+	{
 		return hasRelatedState;
 	}
+
 	/**
-	 * @param hasRelatedState the hasRelatedState to set
+	 * @param hasRelatedState
+	 *            the hasRelatedState to set
 	 */
-	public void setHasRelatedState(boolean hasRelatedState) {
+	public void setHasRelatedState(boolean hasRelatedState)
+	{
 		this.hasRelatedState = hasRelatedState;
 	}
+
 	/**
 	 * @return the hasAggregation
 	 */
-	public boolean isHasAggregation() {
+	public boolean isHasAggregation()
+	{
 		return hasAggregation;
 	}
+
 	/**
-	 * @param hasAggregation the hasAggregation to set
+	 * @param hasAggregation
+	 *            the hasAggregation to set
 	 */
-	public void setHasAggregation(boolean hasAggregation) {
+	public void setHasAggregation(boolean hasAggregation)
+	{
 		this.hasAggregation = hasAggregation;
 	}
+
 	/**
 	 * @return the isSingle
 	 */
-	public boolean isSingle() {
+	public boolean isSingle()
+	{
 		return isSingle;
 	}
+
 	/**
-	 * @param isSingle the isSingle to set
+	 * @param isSingle
+	 *            the isSingle to set
 	 */
-	public void setSingle(boolean isSingle) {
+	public void setSingle(boolean isSingle)
+	{
 		this.isSingle = isSingle;
 	}
-	
-	
 
 }

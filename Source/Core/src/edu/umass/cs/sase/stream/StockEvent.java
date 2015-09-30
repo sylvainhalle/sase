@@ -21,51 +21,52 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.stream;
-
 
 /**
  * This class represents the stock event.
+ * 
  * @author haopeng
  *
  */
-public class StockEvent implements Event{
+public class StockEvent implements Event
+{
 	/**
 	 * Event id
 	 */
 	int id;
-	
+
 	/**
 	 * Event timestamp
 	 */
 	int timestamp;
-	
+
 	/**
 	 * Event type
 	 */
 	String eventType;
-	
+
 	/**
 	 * Symbol, an attribute
 	 */
 	int symbol;
-	
+
 	/**
 	 * Price, an attribute
 	 */
 	int price;
-	
+
 	/**
 	 * Volume, an attribute
 	 */
 	int volume;
-	
-	
+
 	/**
 	 * Constructor
 	 */
-	public StockEvent(int id, int ts, int symbol, int price, int volume){
+	public StockEvent(int id, int ts, int symbol, int price, int volume)
+	{
 		this.id = id;
 		this.timestamp = ts;
 		this.symbol = symbol;
@@ -73,8 +74,10 @@ public class StockEvent implements Event{
 		this.volume = volume;
 		this.eventType = "stock";
 	}
+
 	/**
 	 * Another constructor
+	 * 
 	 * @param id
 	 * @param ts
 	 * @param symbol
@@ -82,7 +85,9 @@ public class StockEvent implements Event{
 	 * @param volume
 	 * @param type
 	 */
-	public StockEvent(int id, int ts, int symbol, int price, int volume, String type){
+	public StockEvent(int id, int ts, int symbol, int price, int volume,
+			String type)
+	{
 		this.id = id;
 		this.timestamp = ts;
 		this.symbol = symbol;
@@ -90,159 +95,186 @@ public class StockEvent implements Event{
 		this.volume = volume;
 		this.eventType = type;
 	}
+
 	/**
 	 * Returns the attribute value for the given attribute
-	 * @param attributeName The name of the attribute to be returned
+	 * 
+	 * @param attributeName
+	 *            The name of the attribute to be returned
 	 */
-	public int getAttributeByName(String attributeName) {
-		if(attributeName.equalsIgnoreCase("symbol"))
+	public int getAttributeByName(String attributeName)
+	{
+		if (attributeName.equalsIgnoreCase("symbol"))
 			return this.symbol;
-		if(attributeName.equalsIgnoreCase("price"))
+		if (attributeName.equalsIgnoreCase("price"))
 			return price;
-		if(attributeName.equalsIgnoreCase("volume"))
+		if (attributeName.equalsIgnoreCase("volume"))
 			return this.volume;
-		if(attributeName.equalsIgnoreCase("id"))
+		if (attributeName.equalsIgnoreCase("id"))
 			return this.id;
-		if(attributeName.equalsIgnoreCase("timestamp"))
+		if (attributeName.equalsIgnoreCase("timestamp"))
 			return this.timestamp;
-		
+
 		return 0;
-		
+
 	}
 
-	
-	public String getEventType() {
+	public String getEventType()
+	{
 		// TODO Auto-generated method stub
 		return this.eventType;
 	}
 
-
-	public int getId() {
+	public int getId()
+	{
 		// TODO Auto-generated method stub
 		return this.id;
 	}
 
-
-	public int getTimestamp() {
+	public int getTimestamp()
+	{
 		// TODO Auto-generated method stub
 		return this.timestamp;
-		
+
 	}
-	
-	public String toString() {
-		return "ID = "+ id + "\tTimestamp = " + timestamp
-		+ "\tSymbol = " + this.symbol + "\tPrice = " + price + "\tVolume = " + volume;
+
+	public String toString()
+	{
+		return "ID = " + id + "\tTimestamp = " + timestamp + "\tSymbol = "
+				+ this.symbol + "\tPrice = " + price + "\tVolume = " + volume;
 	}
 
 	/**
 	 * @return the symbol
 	 */
-	public int getSymbol() {
+	public int getSymbol()
+	{
 		return symbol;
 	}
 
 	/**
-	 * @param symbol the symbol to set
+	 * @param symbol
+	 *            the symbol to set
 	 */
-	public void setSymbol(int symbol) {
+	public void setSymbol(int symbol)
+	{
 		this.symbol = symbol;
 	}
 
 	/**
 	 * @return the price
 	 */
-	public int getPrice() {
+	public int getPrice()
+	{
 		return price;
 	}
 
 	/**
-	 * @param price the price to set
+	 * @param price
+	 *            the price to set
 	 */
-	public void setPrice(int price) {
+	public void setPrice(int price)
+	{
 		this.price = price;
 	}
 
 	/**
 	 * @return the volume
 	 */
-	public int getVolume() {
+	public int getVolume()
+	{
 		return volume;
 	}
 
 	/**
-	 * @param volume the volume to set
+	 * @param volume
+	 *            the volume to set
 	 */
-	public void setVolume(int volume) {
+	public void setVolume(int volume)
+	{
 		this.volume = volume;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
-	public void setId(int id) {
+	public void setId(int id)
+	{
 		this.id = id;
 	}
 
 	/**
-	 * @param timestamp the timestamp to set
+	 * @param timestamp
+	 *            the timestamp to set
 	 */
-	public void setTimestamp(int timestamp) {
+	public void setTimestamp(int timestamp)
+	{
 		this.timestamp = timestamp;
 	}
 
 	/**
-	 * @param eventType the eventType to set
+	 * @param eventType
+	 *            the eventType to set
 	 */
-	public void setEventType(String eventType) {
+	public void setEventType(String eventType)
+	{
 		this.eventType = eventType;
 	}
-
-
-
-	
 
 	/**
 	 * Clones the event
 	 */
-	public Object clone(){
+	public Object clone()
+	{
 		StockEvent o = null;
-		try {
-			o = (StockEvent)super.clone();
-		} catch (CloneNotSupportedException e) {
+		try
+		{
+			o = (StockEvent) super.clone();
+		} catch (CloneNotSupportedException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return o;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.umass.cs.sase.mvc.model.Event#getAttributeByNameDouble(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.umass.cs.sase.mvc.model.Event#getAttributeByNameDouble(java.lang.
+	 * String)
 	 */
-	public double getAttributeByNameDouble(String attributeName) {
+	public double getAttributeByNameDouble(String attributeName)
+	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.umass.cs.sase.mvc.model.Event#getAttributeByNameString(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.umass.cs.sase.mvc.model.Event#getAttributeByNameString(java.lang.
+	 * String)
 	 */
-	public String getAttributeByNameString(String attributeName) {
+	public String getAttributeByNameString(String attributeName)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.umass.cs.sase.mvc.model.Event#getAttributeValueType(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.umass.cs.sase.mvc.model.Event#getAttributeValueType(java.lang.String)
 	 */
-	public int getAttributeValueType(String attributeName) {
+	public int getAttributeValueType(String attributeName)
+	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-
-	
-
-
-	
 
 }

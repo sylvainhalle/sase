@@ -21,7 +21,7 @@
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 package edu.umass.cs.sase.stream;
 
 import java.io.BufferedReader;
@@ -38,45 +38,63 @@ import java.util.StringTokenizer;
 /**
  * Constructor
  */
-public class ParseStockStreamConfig {
-	public static void parseStockEventConfig(String configFile) throws IOException{
+public class ParseStockStreamConfig
+{
+	public static void parseStockEventConfig(String configFile)
+			throws IOException
+	{
 		BufferedReader br = new BufferedReader(new FileReader(configFile));
 		String line;
-		while(!(line = br.readLine()).equalsIgnoreCase("end")){
+		while (!(line = br.readLine()).equalsIgnoreCase("end"))
+		{
 			parseLine(line);
 		}
+		br.close();
 	}
-	
+
 	/**
 	 * Parses a line in the configuration file
-	 * @param line The input line
+	 * 
+	 * @param line
+	 *            The input line
 	 */
-	public static void parseLine(String line){
+	public static void parseLine(String line)
+	{
 		StringTokenizer st = new StringTokenizer(line, "=");
 		String attribute = st.nextToken();
 		String v = st.nextToken();
 		int value = Integer.parseInt(v.trim());
 		setAttributeRange(attribute, value);
-		
+
 	}
-	
+
 	/**
 	 * Sets the attribute range for an attribute
-	 * @param attribute The attribute to be set
-	 * @param value The maximu value to be set
+	 * 
+	 * @param attribute
+	 *            The attribute to be set
+	 * @param value
+	 *            The maximu value to be set
 	 */
-	public static void setAttributeRange(String attribute, int value){
-		if(attribute.trim().equalsIgnoreCase("streamSize")){
+	public static void setAttributeRange(String attribute, int value)
+	{
+		if (attribute.trim().equalsIgnoreCase("streamSize"))
+		{
 			StockStreamConfig.streamSize = value;
-		}else if(attribute.trim().equalsIgnoreCase("maxPrice")){
+		} else if (attribute.trim().equalsIgnoreCase("maxPrice"))
+		{
 			StockStreamConfig.maxPrice = value;
-		}else if(attribute.trim().equalsIgnoreCase("numOfSymbol")){
+		} else if (attribute.trim().equalsIgnoreCase("numOfSymbol"))
+		{
 			StockStreamConfig.numOfSymbol = value;
-		}else if(attribute.trim().equals("maxVolume")){
+		} else if (attribute.trim().equals("maxVolume"))
+		{
 			StockStreamConfig.maxVolume = value;
-		}else if(attribute.trim().equalsIgnoreCase("randomSeed")){
+		} else if (attribute.trim().equalsIgnoreCase("randomSeed"))
+		{
 			StockStreamConfig.randomSeed = value;
-		}else if(attribute.trim().equalsIgnoreCase("increaseProbability")){
+		} else if (attribute.trim().equalsIgnoreCase("increaseProbability"))
+		{
 			StockStreamConfig.increaseProbability = value;
 		}
 	}
